@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Library Hub</title>
+    <style>
+        /* Import font chữ Inter giống giao diện gốc */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0b0c10;
+            /* Tạo hiệu ứng nền kẻ ô vuông lưới (Grid) mờ */
+            background-image: 
+                linear-gradient(to right, #171821 1px, transparent 1px),
+                linear-gradient(to bottom, #171821 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px; /* Chiều rộng cho giao diện mobile */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* --- PHẦN NHẬP KEY (TOP SECTION) --- */
+        .key-section {
+            background: linear-gradient(180deg, #13151f 0%, #0b0c10 100%);
+            border: 1px solid #331f33;
+            border-top: 1px solid #4a2545;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(255, 0, 128, 0.05); /* Hiệu ứng tỏa sáng nhẹ */
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            background-color: #0b0c10;
+            border: 1px solid #232533;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        input::placeholder {
+            color: #5a5d68;
+            font-family: monospace;
+        }
+
+        .btn-unlock {
+            background-color: #ccff00; /* Màu vàng neon */
+            color: black;
+            border: none;
+            padding: 0 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-getkey {
+            width: fit-content;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #12141d;
+            color: white;
+            border: 1px solid #232533;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* --- PHẦN TIÊU ĐỀ & BỘ LỌC (FILTERS) --- */
+        .header-title {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .header-title h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .header-title span {
+            color: #5a5d68;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .filter-btn {
+            background-color: transparent;
+            color: #8a8d98;
+            border: 1px solid #232533;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background-color: white;
+            color: black;
+            border-color: white;
+            font-weight: 600;
+        }
+
+        /* --- PHẦN THẺ SCRIPT (CARDS) --- */
+        .card {
+            background-color: #161824;
+            border: 1px solid #1f222e;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .card-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: black;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+            color: white;
+        }
+
+        .card-subtitle {
+            font-size: 12px;
+            color: #8a8d98;
+            margin: 0;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.key {
+            color: #ff3366;
+            background-color: rgba(255, 51, 102, 0.1);
+        }
+
+        .badge.keyless {
+            color: #00e676;
+            background-color: rgba(0, 230, 118, 0.1);
+        }
+
+        .progress-track {
+            flex: 1;
+            height: 4px;
+            background-color: #232533;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        .percent {
+            color: #8a8d98;
+            font-size: 12px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Phần Box nhập Key ở trên cùng -->
+    <div class="key-section">
+        <div class="input-group">
+            <input type="text" placeholder="Paste your key here">
+            <button class="btn-unlock">Unlock</button>
+        </div>
+        <button class="btn-getkey">
+            <!-- Icon con mắt xích (Link) -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Get key
+        </button>
+    </div>
+
+    <!-- Phần Tiêu đề & Lọc danh sách -->
+    <div class="header-title">
+        <h2>Script library</h2>
+        <span>9 HUBS</span>
+    </div>
+
+    <div class="filters">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">Keyless</button>
+        <button class="filter-btn">Key</button>
+    </div>
+
+    <!-- Danh sách các Hub -->
+    
+    <!-- Hub 1: Overdrive -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon" style="background-color: #00bfff;">O</div>
+            <div>
+                <h3 class="card-title">Overdrive Hub</h3>
+                <p class="card-subtitle">1,836 people got it</p>
+            </div>
+        </div>
+        <div class="card-footer">
+            <span class="badge key">KEY</span>
+            <div class="progress-track">
+                <div class="progress-fill" style="width: 100%; background-color: #00bfff;"></div>
+            </div>
+            <span class="percent">100%</span>
+        </div>
+    </div>
+
+    <!-- Hub 2: Wraith -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon" style="background-color: #8a2be2; color: white;">W</div>
+            <div>
+                <h3 class="card-title">Wraith Hub</h3>
+                <p class="card-subtitle">742 people got it</p>
+            </div>
+        </div>
+        <div class="card-footer">
+            <span class="badge keyless">KEYLESS</span>
+            <div class="progress-track">
+                <div class="progress-fill" style="width: 40%; background-color: #8a2be2;"></div>
+            </div>
+            <span class="percent">40%</span>
+        </div>
+    </div>
+
+    <!-- Hub 3: Bug Hub -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon" style="background-color: #ff0055; color: white;">B</div>
+            <div>
+                <h3 class="card-title">Bug Hub</h3>
+                <p class="card-subtitle">1,204 people got it</p>
+            </div>
+        </div>
+        <div class="card-footer">
+            <span class="badge key">KEY</span>
+            <div class="progress-track">
+                <div class="progress-fill" style="width: 66%; background-color: #ff0055;"></div>
+            </div>
+            <span class="percent">66%</span>
+        </div>
+    </div>
+    
+    <!-- Hub 4: Honey Lua -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon" style="background-color: #ffaa00;">H</div>
+            <div>
+                <h3 class="card-title">Honey Lua</h3>
+                <p class="card-subtitle">958 people got it</p>
+            </div>
+        </div>
+        <div class="card-footer">
+            <span class="badge keyless">KEYLESS</span>
+            <div class="progress-track">
+                <div class="progress-fill" style="width: 52%; background-color: #ffaa00;"></div>
+            </div>
+            <span class="percent">52%</span>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
